@@ -1,0 +1,19 @@
+Package: AlteryxSim
+Type: Package
+Title: R package for Alteryx simulation tools
+Version: 0.1
+Date: 2016-03-23
+Authors@R: person("Dylan", "Blanchard", email = "dblanchard@alteryx.com", role = c("aut", "cre"))
+Description: R package for Alteryx simulation tools.
+License: GPL-3
+LazyData: TRUE
+RoxygenNote: 5.0.1
+Imports:
+  fitdistrplus,
+  triangle,
+  actuar,
+  ppcor,
+  lhs,
+  stringr
+Suggests:
+  AlteryxRDataX
