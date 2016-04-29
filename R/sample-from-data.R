@@ -21,6 +21,7 @@ nonStratSampling <- function(chunkSizes, totalSize, sampleCount, replace = FALSE
     n <- n - (k - size)
     k <- chunkSizes[min(i+1, length(chunkSizes))]
   }
+  return(sampleSizes)
 }
 
 #' Get sample sizes for stratified sampling
