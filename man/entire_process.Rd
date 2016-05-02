@@ -4,14 +4,22 @@
 \alias{entire_process}
 \title{Code for processing when process = "entire"}
 \usage{
-entire_process(chunkSize, count, data)
+entire_process(method, chunkSize, count, data, dataName, replace, totalSize)
 }
 \arguments{
+\item{method}{method}
+
 \item{chunkSize}{int > 0 - maximal number of records to be processed at time}
 
 \item{count}{number of samples to draw}
 
-\item{data}{incomming data if process = "data"}
+\item{data}{<insert doc>}
+
+\item{dataName}{incomming data if process = "data"}
+
+\item{replace}{whether or not to sample with replacement}
+
+\item{totalSize}{total size}
 }
 \value{
 function writes to Alteryx output 1
