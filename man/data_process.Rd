@@ -5,7 +5,7 @@
 \title{Code for processing data inputs}
 \usage{
 data_process(method, chunkSize, count, process, possible, type, id, value, name,
-  roulette, data)
+  roulette, dataName, replace, totalSize)
 }
 \arguments{
 \item{method}{sampling method used: "MC" for Monte Carlo or "LH" for Latin Hypercube}
@@ -28,7 +28,11 @@ data_process(method, chunkSize, count, process, possible, type, id, value, name,
 
 \item{roulette}{json string for roulette data}
 
-\item{data}{incomming data if process = "data"}
+\item{dataName}{incomming data if process = "data"}
+
+\item{replace}{bool for sampling with replacement}
+
+\item{totalSize}{total size}
 }
 \value{
 function writes to Alteryx output 1

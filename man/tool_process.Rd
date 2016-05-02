@@ -5,8 +5,8 @@
 \title{Code for sampling tool in Alteryx}
 \usage{
 tool_process(method, chunkSize, seed, count, distribution, params, bounds,
-  process, possible, type, id, value, name, roulette, data,
-  sampleSource = "parametric")
+  process, possible, type, id, value, name, roulette, dataName, sampleSource,
+  replace, totalSize)
 }
 \arguments{
 \item{method}{sampling method used: "MC" for Monte Carlo or "LH" for Latin Hypercube}
@@ -23,7 +23,8 @@ tool_process(method, chunkSize, seed, count, distribution, params, bounds,
 
 \item{bounds}{vector - first element is lower bound, second is upper. Closed intervals only}
 
-\item{process}{sampling method for data - "entire" to sample records, "each" to sample from columns independently, "best" to fit then sample}
+\item{process}{sampling method for data - "entire" to sample records, "each"
+to sample from columns independently, "best" to fit then sample}
 
 \item{possible}{vector of distribution options to be fit to data}
 
@@ -37,9 +38,13 @@ tool_process(method, chunkSize, seed, count, distribution, params, bounds,
 
 \item{roulette}{json string for roulette data}
 
-\item{data}{incomming data if process = "data"}
+\item{dataName}{incomming data if process = "data"}
 
 \item{sampleSource}{sample source}
+
+\item{replace}{whether or not to sample with replacement}
+
+\item{totalSize}{total size}
 }
 \value{
 function writes to Alteryx output 1

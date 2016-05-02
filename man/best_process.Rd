@@ -4,8 +4,7 @@
 \alias{best_process}
 \title{Code for processing when process = "best"}
 \usage{
-best_process(method, chunkSize, count, possible, type, id, value, name,
-  roulette, data)
+best_process(method, chunkSize, count, possible, data, dataName, totalSize)
 }
 \arguments{
 \item{method}{sampling method used: "MC" for Monte Carlo or "LH" for Latin Hypercube}
@@ -16,17 +15,11 @@ best_process(method, chunkSize, count, possible, type, id, value, name,
 
 \item{possible}{vector of distribution options to be fit to data}
 
-\item{type}{whether data is "binned", comes from "roulette" widget, or is standard}
-
-\item{id}{name of id field for binned data}
-
-\item{value}{name of value field for binned data}
-
-\item{name}{name of output vector for roulette or binned data or parametric input}
-
-\item{roulette}{json string for roulette data}
-
 \item{data}{incomming data if process = "data"}
+
+\item{dataName}{name of data input incoming}
+
+\item{totalSize}{total size}
 }
 \value{
 function writes to Alteryx output 1
