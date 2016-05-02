@@ -28,8 +28,21 @@ param_process <- function(method, chunkSize, count, distribution, params, bounds
 #' @param data incomming data if process = "data"
 #' @return function writes to Alteryx output 1
 #' @export
-entire_process <- function(chunkSize, count, data) {
-  doInChunks(nOutput = 1, total_size = count, chunk_size = chunkSize) (sample_df(df = data))
+entire_process <- function(method, chunkSize, count, dataName, replace, totalSize) {
+  each_process <- function(method, chunkSize, count, data, dataName, replace, totalSize) {
+    strat <- method == 'LH'
+    if(!is.null(data)) {
+      doInChunks(nOutput = 1, total_size = count, chunk_size = chunkSize) (sample_df(df = data, replace = replace))
+    } else {
+      sampleSizes <- getSampleSizes(chunkSize, totalSize, count, replace, strat)
+      samplefxn
+      mapfxn <- function(data, chunkNumber) {
+        numSamples <- sampleSizes[chunkNumber]
+        write.Alteryx(sample_df(df = data, replace = replace)(numSamples),1)
+      }
+      mapReduceChunkArg(dataName, chunkSize, totalSize, NULL) (mapfxn, NULL)
+    }
+  }
 }
 
 #' Code for processing when process = "each"
@@ -39,8 +52,19 @@ entire_process <- function(chunkSize, count, data) {
 #' @param data incomming data if process = "data"
 #' @return function writes to Alteryx output 1
 #' @export
-each_process <- function(chunkSize, count, data) {
-  doInChunks(nOutput = 1, total_size = count, chunk_size = chunkSize) (sample_df_indep(df = data))
+each_process <- function(method, chunkSize, count, data, dataName, replace, totalSize) {
+  strat <- method == 'LH'
+  if(!is.null(data)) {
+    doInChunks(nOutput = 1, total_size = count, chunk_size = chunkSize) (sample_df_indep(df = data, replace = replace))
+  } else {
+    sampleSizes <- getSampleSizes(chunkSize, totalSize, count, replace, strat)
+    samplefxn
+    mapfxn <- function(data, chunkNumber) {
+      numSamples <- sampleSizes[chunkNumber]
+      write.Alteryx(sample_df_indep(df = data, replace = replace) (numSamples),1)
+    }
+    mapReduceChunkArg(dataName, chunkSize, totalSize, NULL) (mapfxn, NULL)
+  }
 }
 
 #' Code for processing when process = "best"
@@ -49,16 +73,23 @@ each_process <- function(chunkSize, count, data) {
 #' @param chunkSize int > 0 - maximal number of records to be processed at time
 #' @param count number of samples to draw
 #' @param possible vector of distribution options to be fit to data
-#' @param type whether data is "binned", comes from "roulette" widget, or is standard
-#' @param id name of id field for binned data
-#' @param value name of value field for binned data
-#' @param name name of output vector for roulette or binned data or parametric input
-#' @param roulette json string for roulette data
 #' @param data incomming data if process = "data"
+#' @param dataName name of data input incoming
 #' @return function writes to Alteryx output 1
 #' @export
-best_process <- function(method, chunkSize, count, possible, type, id, value, name, roulette, data) {
-  doInChunks(nOutput = 1, total_size = count, chunk_size = chunkSize) (sample_best(data = data, dist_list = possible, type = method))
+best_process <- function(method, chunkSize, count, possible, data, dataName) {
+  strat <- method == 'LH'
+  if(!is.null(data)) {
+    doInChunks(nOutput = 1, total_size = count, chunk_size = chunkSize) (sample_df(df = data, replace = replace))
+  } else {
+    sampleSizes <- getSampleSizes(chunkSize, totalSize, count, replace, strat)
+    samplefxn
+    mapfxn <- function(data, chunkNumber) {
+      numSamples <- sampleSizes[chunkNumber]
+      write.Alteryx(sample_df_indep(df = data, replace = replace),1)
+    }
+    mapReduceChunkArg(dataName, chunkSize, totalSize, NULL) (mapfxn, NULL)
+  }
 }
 
 #' Code for processing data inputs
@@ -74,10 +105,16 @@ best_process <- function(method, chunkSize, count, possible, type, id, value, na
 #' @param name name of output vector for roulette or binned data or parametric input
 #' @param roulette json string for roulette data
 #' @param data incomming data if process = "data"
+#' @param replace bool for sampling with replacement
+#' @param totalSize total number of records
 #' @return function writes to Alteryx output 1
 #' @export
-data_process <- function(method, chunkSize, count, process, possible, type, id, value, name, roulette, data)
+data_process <- function(method, chunkSize, count, process, possible, dataName, replace, totalSize)
 {
+  data <- NULL
+  if(type == "binned") {
+    data <- AlteryxRhelper::read.Alteryx2(dataName)
+  }
   if(type == "roulette") {
     data <- string_to_bin(roulette)
     type = "binned"
@@ -86,9 +123,9 @@ data_process <- function(method, chunkSize, count, process, possible, type, id, 
     data <- bin_to_data(data)
   }
   switch(process,
-         entire = entire_process(chunkSize, count, data),
-         each = each_process(chunkSize, count, data),
-         best = best_process(method, chunkSize, count, process, possible, type, id, value, name, roulette)
+         entire = entire_process(method, chunkSize, count, dataName, data, replace, totalSize),
+         each = each_process(method, chunkSize, count, dataName, data, replace, totalSize),
+         best = best_process(method, chunkSize, count, dataName, data, possible)
   )
 }
 
@@ -114,7 +151,8 @@ data_process <- function(method, chunkSize, count, process, possible, type, id, 
 #' @export
 tool_process <- function(method, chunkSize, seed, count, distribution,
                          params, bounds, process, possible, type,
-                         id, value, name, roulette, data, sampleSource = 'parametric'
+                         id, value, roulette, dataName, 
+                         sampleSource, replace, totalSize
                          )
 {
   set.seed(seed)
@@ -135,8 +173,10 @@ tool_process <- function(method, chunkSize, seed, count, distribution,
                              type = type,
                              id = id,
                              value = value,
-                             name = name,
-                             roulette = roulette)
+                             roulette = roulette, 
+                             dataName = dataName,
+                             replace = replace,
+                             totalSize = totalSize)
   )
 
 }
