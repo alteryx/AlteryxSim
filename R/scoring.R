@@ -35,7 +35,7 @@ scoreProcess <- function(model, isGLM, mult, totalCountSim, validation, seed, ch
       simData <- unlist(simulateGLM(model, mult)(x))
     } else {
       predVal <- as.vector(predict(model, validation))
-      actualVal <- as.vector(validation[,tarVarName])
+      actualVal <- convertTo01(as.vector(validation[,tarVarName]))
       errors <- actualVal - predVal
       simData <- unlist(simulateNonGLM(model, mult, errors) (x))
     }
@@ -82,7 +82,7 @@ simulateNonGLM <- function(object, nsim, errorVec) {
   function(newdata) {
     fullErrors <- sample(errorVec, length(newdata)*nsim, replace = TRUE)
     newPreds <- as.vector(predict(object, newdata = newdata))
-    rep(newPreds, nsim) + fullErrors
+    lapply(rep(newPreds, nsim) + fullErrors, FUN = getScore)
   }
 }
 
