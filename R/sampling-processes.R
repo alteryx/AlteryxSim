@@ -35,18 +35,16 @@ param_process <- function(method, chunkSize, count, distribution, params, bounds
 #' @return function writes to Alteryx output 1
 #' @export
 entire_process <- function(method, chunkSize, count, data, dataName, replace, totalSize) {
-  each_process <- function(method, chunkSize, count, data, dataName, replace, totalSize) {
-    strat <- method == 'LH'
-    if(!is.null(data)) {
-      doInChunks(nOutput = 1, total_size = count, chunk_size = chunkSize) (sample_df(df = data, replace = replace))
-    } else {
-      sampleSizes <- getSampleSizes(chunkSize, totalSize, count, replace, strat)
-      mapfxn <- function(data, chunkNumber) {
-        numSamples <- sampleSizes[chunkNumber]
-        AlteryxRDataX::write.Alteryx(sample_df(df = data, replace = replace)(numSamples),1)
-      }
-      mapReduceChunkArg(dataName, chunkSize, totalSize, NULL) (mapfxn, NULL)
+  strat <- method == 'LH'
+  if(!is.null(data)) {
+    doInChunks(nOutput = 1, total_size = count, chunk_size = chunkSize) (sample_df(df = data, replace = replace))
+  } else {
+    sampleSizes <- getSampleSizes(chunkSize, totalSize, count, replace, strat)
+    mapfxn <- function(data, chunkNumber) {
+      numSamples <- sampleSizes[chunkNumber]
+      AlteryxRDataX::write.Alteryx(sample_df(df = data, replace = replace) (numSamples),1)
     }
+    mapReduceChunkArg(dataName, chunkSize, totalSize, NULL) (mapfxn, NULL)
   }
 }
 
@@ -115,6 +113,8 @@ best_process <- function(method, chunkSize, count, possible, data, dataName, tot
 data_process <- function(method, chunkSize, count, process, possible, type, id, value, name, 
     roulette, dataName, replace, totalSize){
   data <- NULL
+  print("process")
+  print(process)
   if(type == "binned") {
     data <- AlteryxRhelper::read.Alteryx2(dataName)
   }
@@ -126,9 +126,12 @@ data_process <- function(method, chunkSize, count, process, possible, type, id, 
     data <- bin_to_data(data)
   }
   switch(process,
-    entire = entire_process(method, chunkSize, count, dataName, data, replace, totalSize),
-    each = each_process(method, chunkSize, count, dataName, data, replace, totalSize),
-    best = best_process(method, chunkSize, count, dataName, data, possible)
+    entire = entire_process(method, chunkSize, count, data, dataName, replace, totalSize),
+    each = each_process(method, chunkSize, count, data, dataName, replace, totalSize),
+    best = best_process(method, chunkSize, count, data, dataName, possible),
+    rows = entire_process(method, chunkSize, count,data, dataName, replace, totalSize),
+    columns = each_process(method, chunkSize, count, data, dataName, replace, totalSize),
+    dist = best_process(method, chunkSize, count, data, dataName, possible)
   )
 }
 
@@ -159,7 +162,6 @@ tool_process <- function(method, chunkSize, seed, count, distribution,
   params, bounds, process, possible, type, id, value, name, roulette, dataName, 
   sampleSource, replace, totalSize){
   set.seed(seed)
-
   switch(sampleSource,
     parametric = param_process(
       method = method,
@@ -167,7 +169,8 @@ tool_process <- function(method, chunkSize, seed, count, distribution,
       count = count,
       distribution = distribution,
       params = params,
-      bounds = bounds
+      bounds = bounds, 
+      name = name
     ),
     data = data_process(
       method = method,

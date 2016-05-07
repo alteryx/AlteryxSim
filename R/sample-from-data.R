@@ -83,8 +83,9 @@ sample_df <- function(df, replace = TRUE, ...) {
 #' @return samples from dataframe
 #' @export
 sample_df_indep <- function(df, replace = TRUE, ...) {
+  print(str(df))
   function(m){
-    df_new <- as.data.frame(df, sample, size = m, replace = replace, ...)
+    df_new <- as.data.frame(lapply(df, sample, size = m, replace = replace, ...))
     names(df_new) <- names(df)
     df_new
   }
