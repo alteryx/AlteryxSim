@@ -48,7 +48,12 @@ convert_dist <- function(distribution) {
     poisson = "pois",
     binomial = "binom"
   )
-  unname(dist_conversion_vector[distribution])
+  x <- unname(dist_conversion_vector[distribution])
+  if(is.na(x)) {
+    distribution
+  } else {
+    x
+  }
 }
 
 #' Give vector of chunk sizes
@@ -67,36 +72,6 @@ get_chunk_sizes <- function(chunk_size, total_size) {
   }
   unlist(lapply(chunk_numbers, FUN = no_to_size))
 }
-
-# #' Decides whether substring from list box interface tool is a true or false element
-# #'
-# #' @param x string
-# #' @return bool whether the string ends in true
-# #' @export
-# #' @examples
-# #'    get.true("Normal=True")
-# get.true <- Vectorize(function(x) {ifelse(substr(x,nchar(x)-3, nchar(x))=="True",TRUE, FALSE)})
-
-# #' Splits string by an = sign
-# #'
-# #' @param x string to split
-# #' @return split string
-# #' @export
-# #' @examples
-# #'    split.equals("Normal=True")
-# split.equals <- function(x) strsplit(x, "=")
-
-# #' get true components of string from list box interfact tool
-# #'
-# #' @param string string to eval
-# #' @return vector of string terms which equal true
-# #' @export
-# #' @examples
-# #'    get_all_trues("Normal=True,Lognormal=False,Gamma=True")
-# get_all_trues <- function (string) {
-#   trues <- unlist(strsplit(string, ','))
-#   sapply(split.equals(subset(trues, get.true(trues))), "[[", 1)
-# }
 
 #' Apply function to each chunk if in Alteryx. If outside, run on full size
 #'
