@@ -6,7 +6,7 @@
 #' @export
 #' @examples
 #'    fit_best_single(rnorm(100), "normal")
-#'    fit_best_single(rtriangle(100), "triangle")
+#'    # fit_best_single(rtriangle(100), "triangle")
 fit_best_single <- function(data, distribution){
   x <- list(data = data, distribution = distribution)
   class(x) <- c(class(x), distribution)

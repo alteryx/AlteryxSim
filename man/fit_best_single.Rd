@@ -19,6 +19,6 @@ For specified distribution, find parameters for best-fitting distribution
 }
 \examples{
    fit_best_single(rnorm(100), "normal")
-   fit_best_single(rtriangle(100), "triangle")
+   # fit_best_single(rtriangle(100), "triangle")
 }
 
