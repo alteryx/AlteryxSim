@@ -116,7 +116,7 @@ data_process <- function(method, chunkSize, count, process, possible, type, id, 
   print("process")
   print(process)
   if(type == "binned") {
-    data <- AlteryxRhelper::read.Alteryx2(dataName)
+    data <- AlteryxRDataX::read.Alteryx(dataName)
   }
   if(type == "roulette") {
     data <- string_to_bin(roulette)
