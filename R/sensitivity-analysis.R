@@ -1,8 +1,9 @@
 #' Function to make single scatter plot
 #' 
+#' 
 #' @param data data for plot
-#' @param independent variable name
-#' @param dependent variable name
+#' @param input variable name
+#' @param output variable name
 #' @return scatter plot
 #' @export
 singleScat <- function(data, input, output) {
@@ -82,9 +83,8 @@ saPrSingle <- function (data, inputs, output) {
 
 #' Partial Correlation Coefficients
 #' 
+#' 
 #' @param data dataframe of data
-#' @param inputs vector of names for independent variable
-#' @param outputs vector of dependent variable names
 #' @return list of matrices of partial correlations
 #' @export
 saPr2 <- function(data) {
