@@ -6,7 +6,7 @@
 #' @export
 #' @examples
 #'    fit_best_single(rnorm(100), "normal")
-#'    fit_best_single(rnorm(100), "triangle")
+#'    fit_best_single(rtriangle(100), "triangle")
 fit_best_single <- function(data, distribution){
   x <- list(data = data, distribution = distribution)
   class(x) <- c(class(x), distribution)
@@ -49,7 +49,11 @@ fitdist_Alteryx.pareto <- function(x, ...){
     stop("Error in pareto_mle: values must be positive to fit a pareto distribution")
   }
   alpha <- length(x)/(sum(log(x))-length(x)*log(xm))
-  return(list(distribution = "pareto", estimate = list(xm = xm, alpha = alpha), data = x))
+  list(
+    distribution = "pareto", 
+    estimate = list(xm = xm, alpha = alpha), 
+    data = x
+  )
 }
 
 #' Fit triangular distribution
@@ -78,7 +82,11 @@ fitdist_Alteryx.triangle <- function(x, ...){
 #' @return fit object or NA (if can't be fit)
 #' @export
 try_fit_best_single <- function (data, distribution) {
-  tryCatch(fit_best_single(data, distribution), error=function(cond) {return(NA)}, silent = TRUE)
+  tryCatch(
+    fit_best_single(data, distribution), 
+    error=function(cond) {return(NA)}, 
+    silent = TRUE
+  )
 }
 
 #' Get info on fitting and gof
