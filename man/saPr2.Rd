@@ -8,10 +8,6 @@ saPr2(data)
 }
 \arguments{
 \item{data}{dataframe of data}
-
-\item{inputs}{vector of names for independent variable}
-
-\item{outputs}{vector of dependent variable names}
 }
 \value{
 list of matrices of partial correlations

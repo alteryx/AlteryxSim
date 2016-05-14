@@ -9,9 +9,9 @@ singleScat(data, input, output)
 \arguments{
 \item{data}{data for plot}
 
-\item{independent}{variable name}
+\item{input}{variable name}
 
-\item{dependent}{variable name}
+\item{output}{variable name}
 }
 \value{
 scatter plot
