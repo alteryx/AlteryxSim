@@ -13,7 +13,6 @@ string_to_bin <- function (incoming, bin_split=",", id_split=":") {
   incoming <- substr(incoming, 2, nchar(incoming)-1)
   bins <- unlist(strsplit(incoming,bin_split))
   idVal_pair <- mapply(FUN=strsplit, bins, c(id_split), USE.NAMES = FALSE)
-  print(idVal_pair)
   ids <- as.numeric(unlist(lapply(idVal_pair, '[[', 1)))
   vals <- as.integer(unlist(lapply(idVal_pair, '[[', 2)))
   data.frame(id = ids, count = vals)
