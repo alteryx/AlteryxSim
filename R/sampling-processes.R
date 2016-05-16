@@ -79,18 +79,13 @@ each_process <- function(method, chunkSize, count, data, dataName, replace, tota
 #' @param totalSize total size
 #' @return function writes to Alteryx output 1
 #' @export
-best_process <- function(method, chunkSize, count, possible, data, dataName, totalSize) {
-  strat <- method == 'LH'
-  if(!is.null(data)) {
-    doInChunks(nOutput = 1, total_size = count, chunk_size = chunkSize) (sample_df(df = data, replace = replace))
-  } else {
-    sampleSizes <- getSampleSizes(chunkSize, totalSize, count, replace, strat)
-    mapfxn <- function(data, chunkNumber) {
-      numSamples <- sampleSizes[chunkNumber]
-      AlteryxRDataX::dwrite.Alteryx(sample_df_indep(df = data, replace = replace),1)
-    }
-    mapReduceChunkArg(dataName, chunkSize, totalSize, NULL) (mapfxn, NULL)
+best_process <- function(method, chunkSize, count, data, dataName, possible) {
+  if(is.null(data)) {
+    data <- AlteryxRDataX::read.Alteryx(dataName)
   }
+  print(str(data))
+  print(dataName)
+  doInChunks(nOutput = 1, total_size = count, chunk_size = chunkSize) (sample_best(data = data, dist_list = possible, type = method))
 }
 
 #' Code for processing data inputs
