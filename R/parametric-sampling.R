@@ -53,7 +53,7 @@ sample_LH_from_dist <- function(distribution, param_list) {
 #' @examples
 #'    rej_sample_from_dist("normal", list(mean = 0, sd = 1))(10)
 #'    rej_sample_from_dist("normal", type = "LH",  c(0,1), lower = -1, upper = 1)(10)
-rej_sample_from_dist <- function(distribution, param_list, type = "MC",
+rej_sample_from_dist2 <- function(distribution, param_list, type = "MC",
     lower = -Inf, upper = Inf) {
   sampling_function <- switch(type,
     "MC" = sample_MC_from_dist,
@@ -66,7 +66,10 @@ rej_sample_from_dist <- function(distribution, param_list, type = "MC",
     difference <- m
     while (difference > 0) {
       generated <- sampling_function(difference)
-      accepted <- c(accepted, generated[generated >= lower && generated <= upper])
+      print(generated)
+      generated <- generated[generated >= lower]
+      accepted <- c(accepted, generated[generated <= upper])
+      print(accepted)
       difference <- m - length(accepted)
     }
     accepted

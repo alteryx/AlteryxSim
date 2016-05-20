@@ -8,21 +8,13 @@
 #' @examples
 #'    string_to_bin('{"0": 1, "1": 10, "2": 30}')
 string_to_bin <- function (incoming, bin_split=",", id_split=":") {
-  # ensure string, remove spaces
   incoming <- gsub(" ", "", toString(incoming), fixed=TRUE)
-  # remove quotes
-  incoming <- gsub("'", "", incoming, fixed = TRUE)
-  # remove brackets
+  incoming <- gsub('"', "", incoming, fixed = TRUE)
   incoming <- substr(incoming, 2, nchar(incoming)-1)
-  # separate bins
   bins <- unlist(strsplit(incoming,bin_split))
-  # seperate id and value
   idVal_pair <- mapply(FUN=strsplit, bins, c(id_split), USE.NAMES = FALSE)
-  # get ids as numbers
   ids <- as.numeric(unlist(lapply(idVal_pair, '[[', 1)))
-  # get vals as integers
   vals <- as.integer(unlist(lapply(idVal_pair, '[[', 2)))
-  # return dataframe
   data.frame(id = ids, count = vals)
 }
 
