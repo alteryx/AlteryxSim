@@ -123,10 +123,7 @@ data_process <- function(method, chunkSize, count, process, possible, type, id, 
   switch(process,
     entire = entire_process(method, chunkSize, count, data, dataName, replace, totalSize),
     each = each_process(method, chunkSize, count, data, dataName, replace, totalSize),
-    best = best_process(method, chunkSize, count, data, dataName, possible),
-    rows = entire_process(method, chunkSize, count,data, dataName, replace, totalSize),
-    columns = each_process(method, chunkSize, count, data, dataName, replace, totalSize),
-    dist = best_process(method, chunkSize, count, data, dataName, possible)
+    best = best_process(method, chunkSize, count, data, dataName, possible)
   )
 }
 
@@ -183,3 +180,4 @@ tool_process <- function(method, chunkSize, seed, count, distribution,
     )
   )
 }
+
