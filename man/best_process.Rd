@@ -4,7 +4,7 @@
 \alias{best_process}
 \title{Code for processing when process = "best"}
 \usage{
-best_process(method, chunkSize, count, possible, data, dataName, totalSize)
+best_process(method, chunkSize, count, data, dataName, possible)
 }
 \arguments{
 \item{method}{sampling method used: "MC" for Monte Carlo or "LH" for Latin Hypercube}
@@ -13,11 +13,11 @@ best_process(method, chunkSize, count, possible, data, dataName, totalSize)
 
 \item{count}{number of samples to draw}
 
-\item{possible}{vector of distribution options to be fit to data}
-
 \item{data}{incomming data if process = "data"}
 
 \item{dataName}{name of data input incoming}
+
+\item{possible}{vector of distribution options to be fit to data}
 
 \item{totalSize}{total size}
 }
