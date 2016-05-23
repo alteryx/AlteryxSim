@@ -76,7 +76,6 @@ each_process <- function(method, chunkSize, count, data, dataName, replace, tota
 #' @param possible vector of distribution options to be fit to data
 #' @param data incomming data if process = "data"
 #' @param dataName name of data input incoming
-#' @param totalSize total size
 #' @return function writes to Alteryx output 1
 #' @export
 best_process <- function(method, chunkSize, count, data, dataName, possible) {

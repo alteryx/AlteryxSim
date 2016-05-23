@@ -18,8 +18,6 @@ best_process(method, chunkSize, count, data, dataName, possible)
 \item{dataName}{name of data input incoming}
 
 \item{possible}{vector of distribution options to be fit to data}
-
-\item{totalSize}{total size}
 }
 \value{
 function writes to Alteryx output 1
