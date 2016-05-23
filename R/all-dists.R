@@ -345,7 +345,7 @@ allDistributions <- function() {
           ),
         param3 = NULL
         )
-      ),
+      )
 
     # weibull = list(
     #   distribution = "weibull",
