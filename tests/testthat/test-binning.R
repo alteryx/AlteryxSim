@@ -6,7 +6,7 @@ test_that("string_to_bin correctly converts roulette string df of ids/vals", {
 
 test_that("bin_to_data correctly converts df of ids/vals to vector of values", {
   binnedData <- data.frame(id = c(0,1,2), count = c(1,10,30))
-  vecData <- bin_to_data(x)
+  vecData <- bin_to_data(binnedData)
   bin0 <- vecData[1]
   bin1 <- vecData[2:11]
   bin2 <- vecData[12: 41]
