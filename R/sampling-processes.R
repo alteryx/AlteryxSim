@@ -118,11 +118,7 @@ data_process <- function(method, chunkSize, count, process, possible, type, id, 
     type = "binned"
   }
   if(type == "binned") {
-    if(!is.null(id) && !is.null(value)) {
-      data <- data.frame(data = bin_to_data(bins = data, idName = id, valName = value))
-    } else {
-      data <- data.frame(data = bin_to_data(data))
-    }
+    data <- data.frame(data = bin_to_data(bins = data))
     names(data) <- c(name)
   }
   switch(process,
