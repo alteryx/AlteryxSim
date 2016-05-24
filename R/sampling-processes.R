@@ -109,16 +109,32 @@ data_process <- function(method, chunkSize, count, process, possible, type, id, 
   data <- NULL
   print("process")
   print(process)
+  print("type")
+  print(type)
   if(type == "binned") {
     data <- AlteryxRDataX::read.Alteryx(dataName)
+    idVec <- data[, id]
+    valVec <- data[, value]
+    data <- data.frame(id = idVec, count <- valVec)
   }
+  print("data1")
+  print(str(data))
   if(type == "roulette") {
     data <- string_to_bin(roulette)
     type = "binned"
   }
   if(type == "binned") {
-    data <- bin_to_data(data)
+    if(!is.null(id) && !is.null(value)) {
+      data <- data.frame(data = bin_to_data(bins = data, idName = id, valName = value))
+      print("namse")
+      print(id)
+      print(value)
+    } else {
+      data <- data.frame(data = bin_to_data(data))
+    }
+    names(data) <- c(name)
   }
+  print(str(data))
   switch(process,
     entire = entire_process(method, chunkSize, count, data, dataName, replace, totalSize),
     each = each_process(method, chunkSize, count, data, dataName, replace, totalSize),
@@ -172,6 +188,7 @@ tool_process <- function(method, chunkSize, seed, count, distribution,
       type = type,
       id = id,
       value = value,
+      name = name,
       roulette = roulette, 
       dataName = dataName,
       replace = replace,
