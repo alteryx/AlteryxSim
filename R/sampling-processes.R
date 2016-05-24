@@ -119,10 +119,19 @@ data_process <- function(method, chunkSize, count, process, possible, type, id, 
   }
   print("data1")
   print(str(data))
-  if(type == "roulette") {
-    data <- string_to_bin(roulette)
+  print("doing manual if")
+  if(type == "manual") {
+    print("doing roulette stuff")
+    print(roulette)
+    print(str(roulette))
+    idVec <- names(roulette)
+    valVec <- unlist(roulette)
+    data <- data.frame(id = idVec, count <- valVec)
+    print(str(data))
     type = "binned"
+    print(name)
   }
+  print("done manual if")
   if(type == "binned") {
     if(!is.null(id) && !is.null(value)) {
       data <- data.frame(data = bin_to_data(bins = data, idName = id, valName = value))
