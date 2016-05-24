@@ -82,8 +82,6 @@ best_process <- function(method, chunkSize, count, data, dataName, possible) {
   if(is.null(data)) {
     data <- AlteryxRDataX::read.Alteryx(dataName)
   }
-  print(str(data))
-  print(dataName)
   doInChunks(nOutput = 1, total_size = count, chunk_size = chunkSize) (sample_best(data = data, dist_list = possible, type = method))
 }
 
@@ -107,43 +105,26 @@ best_process <- function(method, chunkSize, count, data, dataName, possible) {
 data_process <- function(method, chunkSize, count, process, possible, type, id, value, name, 
     roulette, dataName, replace, totalSize){
   data <- NULL
-  print("process")
-  print(process)
-  print("type")
-  print(type)
   if(type == "binned") {
     data <- AlteryxRDataX::read.Alteryx(dataName)
     idVec <- data[, id]
     valVec <- data[, value]
     data <- data.frame(id = idVec, count <- valVec)
   }
-  print("data1")
-  print(str(data))
-  print("doing manual if")
   if(type == "manual") {
-    print("doing roulette stuff")
-    print(roulette)
-    print(str(roulette))
     idVec <- names(roulette)
     valVec <- unlist(roulette)
     data <- data.frame(id = idVec, count <- valVec)
-    print(str(data))
     type = "binned"
-    print(name)
   }
-  print("done manual if")
   if(type == "binned") {
     if(!is.null(id) && !is.null(value)) {
       data <- data.frame(data = bin_to_data(bins = data, idName = id, valName = value))
-      print("namse")
-      print(id)
-      print(value)
     } else {
       data <- data.frame(data = bin_to_data(data))
     }
     names(data) <- c(name)
   }
-  print(str(data))
   switch(process,
     entire = entire_process(method, chunkSize, count, data, dataName, replace, totalSize),
     each = each_process(method, chunkSize, count, data, dataName, replace, totalSize),

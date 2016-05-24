@@ -66,10 +66,8 @@ rej_sample_from_dist <- function(distribution, param_list, type = "MC",
     difference <- m
     while (difference > 0) {
       generated <- sampling_function(difference)
-      print(generated)
       generated <- generated[generated >= lower]
       accepted <- c(accepted, generated[generated <= upper])
-      print(accepted)
       difference <- m - length(accepted)
     }
     accepted
