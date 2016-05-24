@@ -25,7 +25,7 @@ string_to_bin <- function (incoming, bin_split=",", id_split=":") {
 #' @param discrete whether the data is discrete (default is False)
 #' @return convert bins into vector of data
 #' @export
-bin_to_data <- function (bins, discrete = FALSE, idName = NULL, valName = NULL) {
+bin_to_data <- function (bins, discrete = FALSE) {
   idVec <- bins$id
   if(!discrete) {
     idVec <- as.numeric(idVec)
