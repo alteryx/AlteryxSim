@@ -5,14 +5,17 @@
 #' @return function taking a size argument to return number of samples
 #' @export
 #' @examples
-#'   sample_MC_from_dist("normal", c(0, 1))
+#'   sample_MC_from_dist("normal", list(0, 1))
 #'   sample_MC_from_dist("normal", list(mean = 0, sd = 1))
+#'   sample_MC_from_dist("hyper", list(m = 10, n = 7, k = 8))
+#'   sample_MC_from_dist("hyper", list(10, 7, 8))(10)
 sample_MC_from_dist <- function(distribution, param_list) {
   param_list <- Filter(Negate(is.null), param_list)
   function(m) {
     do.call(
       match.fun(paste0('r', convert_dist(distribution))),
-      append(param_list, list(n = m))
+      #append(param_list, list(n = m))
+      append(m, param_list)
     )
   }
 }
