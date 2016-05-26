@@ -15,7 +15,7 @@ sample_MC_from_dist <- function(distribution, param_list) {
     do.call(
       match.fun(paste0('r', convert_dist(distribution))),
       #append(param_list, list(n = m))
-      append(m, param_list)
+      append(m, as.list(param_list))
     )
   }
 }
