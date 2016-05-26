@@ -15,7 +15,9 @@ allDistributions <- function() {
   #         ),
   #       param2 = ...,
   #       param3 = ...
-  #       )
+  #       ),
+  #     bounds = c(lower bound of support, upper bound of support),
+  #     discrete = only integer outputs?
   #     )
 
   list(
@@ -52,7 +54,9 @@ allDistributions <- function() {
           isInt = FALSE
           ),
         param3 = NULL
-        )
+        ),
+      bounds = c(0, Inf),
+      discrete = TRUE
       ),
 
     # cauchy = list(
@@ -133,7 +137,9 @@ allDistributions <- function() {
           isInt = FALSE
           ),
         param3 = NULL
-        )
+        ),
+      bounds = c(.0000001, Inf),
+      discrete = FALSE
       ),
 
     geometric = list(
@@ -147,7 +153,9 @@ allDistributions <- function() {
           ),
         param2 = NULL,
         param3 = NULL
-        )
+        ),
+      bounds = c(1, Inf),
+      discrete = TRUE
       ),
 
     # hypergeometric = list(
@@ -204,7 +212,9 @@ allDistributions <- function() {
           isInt = FALSE
           ),
         param3 = NULL
-        )
+        ),
+      bounds = c(.0000001, Inf),
+      discrete = FALSE
       ),
 
     # negative_binomial = list(
@@ -240,7 +250,9 @@ allDistributions <- function() {
           isInt = FALSE
           ),
         param3 = NULL
-        )
+        ),
+      bounds = c(-Inf, Inf),
+      discrete = FALSE
       ),
 
     pareto = list(
@@ -258,7 +270,9 @@ allDistributions <- function() {
           isInt = FALSE
           ),
         param3 = NULL
-        )
+        ),
+      bounds = c(.0000001, Inf),
+      discrete = FALSE
       ),
 
     poisson = list(
@@ -272,7 +286,9 @@ allDistributions <- function() {
           ),
         param2 = NULL,
         param3 = NULL
-        )
+        ),
+      bounds = c(0, Inf),
+      discrete = TRUE
       ),
 
     # student_t = list(
@@ -326,7 +342,9 @@ allDistributions <- function() {
           bounds = c(-Inf, Inf), # actually, c(a, b)
           isInt = FALSE
           )
-        )
+        ),
+      bounds = c(-Inf, Inf),
+      discrete = FALSE
       ),
 
     uniform = list(
@@ -344,7 +362,9 @@ allDistributions <- function() {
           isInt = FALSE
           ),
         param3 = NULL
-        )
+        ),
+      bounds = c(-Inf, Inf),
+      discrete = FALSE
       )
 
     # weibull = list(
