@@ -115,7 +115,7 @@ data_process <- function(method, chunkSize, count, process, possible, type, id, 
     data <- data.frame(id = idVec, count <- valVec)
   }
   if(type == "manual") {
-    idVec <- names(roulette)
+    idVec <- as.numeric(names(roulette))
     valVec <- unlist(roulette, use.names = F)
     data <- data.frame(id = idVec, count = valVec)
     type = "binned"
