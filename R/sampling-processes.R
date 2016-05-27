@@ -11,6 +11,9 @@
 #' @export
 param_process <- function(method, chunkSize, count, distribution, params, bounds, name)
 {
+  x <- params
+  class(x) <- distribution
+  errorCheckParams(x)
   doInChunks(nOutput = 1, total_size = count, chunk_size = chunkSize, names = c(name)) (
     rej_sample_from_dist(
       distribution = distribution,
