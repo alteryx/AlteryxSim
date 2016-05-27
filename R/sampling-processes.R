@@ -11,6 +11,9 @@
 #' @export
 param_process <- function(method, chunkSize, count, distribution, params, bounds, name)
 {
+  x <- params
+  class(x) <- distribution
+  errorCheckParams(x)
   doInChunks(nOutput = 1, total_size = count, chunk_size = chunkSize, names = c(name)) (
     rej_sample_from_dist(
       distribution = distribution,
@@ -112,7 +115,7 @@ data_process <- function(method, chunkSize, count, process, possible, type, id, 
     data <- data.frame(id = idVec, count <- valVec)
   }
   if(type == "manual") {
-    idVec <- names(roulette)
+    idVec <- as.numeric(names(roulette))
     valVec <- unlist(roulette, use.names = F)
     data <- data.frame(id = idVec, count = valVec)
     type = "binned"

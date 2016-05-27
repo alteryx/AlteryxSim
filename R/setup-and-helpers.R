@@ -107,3 +107,37 @@ doInChunks <- function(nOutput, total_size, chunk_size, names = NULL){
   }
   }
 }
+
+#' Generic check for illegal parameters; throws error if params out of bounds
+#' 
+#' @param paramList list of parameters
+#' @export
+errorCheckParams <- function(paramList) {
+  UseMethod('errorCheckParams')
+}
+
+#' Default error check; returns no error
+#' 
+#' @inheritParams errorCheckParams
+#' @export
+errorCheckParams.default <- function(paramList) {}
+
+#' uniform distribution error check
+#' 
+#' @inheritParams errorCheckParams
+#' @export
+errorCheckParams.uniform <- function(paramList) {
+  if (paramList$max <= paramList$min) {
+    stop("For uniform distribution, min must be less than max")
+  }
+}
+
+#' triangular distribution error check
+#' 
+#' @inheritParams errorCheckParams
+#' @export
+errorCheckParams.triangular <- function(paramList) {
+  if (paramList$a > paramList$c || paramList$b < paramList$c || paramList$b <= paramList$a) {
+    stop("For triangular distribution, must have min <= most likely <= max and min < max")
+  }
+}
