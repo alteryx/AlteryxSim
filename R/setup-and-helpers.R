@@ -141,3 +141,77 @@ errorCheckParams.triangular <- function(paramList) {
     stop("For triangular distribution, must have min <= most likely <= max and min < max")
   }
 }
+
+#' Generic error check for illegal bounds; throws error if set bound is outside of absolute bound
+#' 
+#' @param boundsVec 
+#' @export
+errorCheckBounds <- function(boundsVec) {
+  UseMethod("errorCheckBounds")
+}
+
+#' Default error check for bounds method
+#' 
+#' @inheritParams errorCheckBounds
+#' @export
+errorCheckBounds.default <- function(boundsVec) {}
+
+#' Error check for binomial out of bounds
+#' 
+#' @inheritParams errorCheckBounds
+#' @export
+errorCheckBounds.binomial <- function(boundsvec) {
+  if(boundsVec[2] <= 0) {
+    stop("Absolute lower bound for binomial is 0")
+  }
+}
+
+#' Error check for gamma out of bounds
+#' 
+#' @inheritParams errorCheckBounds
+#' @export
+errorCheckBounds.gamma <- function(boundsvec) {
+  if(boundsVec[2] <= 0) {
+    stop("Absolute lower bound for gamma is 0")
+  }
+}
+
+#' Error check for lognormal out of bounds
+#' 
+#' @inheritParams errorCheckBounds
+#' @export
+errorCheckBounds.lognormal <- function(boundsvec) {
+  if(boundsVec[2] <= 0) {
+    stop("Absolute lower bound for lognormal is 0")
+  }
+}
+
+#' Error check for pareto out of bounds
+#' 
+#' @inheritParams errorCheckBounds
+#' @export
+errorCheckBounds.pareto <- function(boundsvec) {
+  if(boundsVec[2] <= 0) {
+    stop("Absolute lower bound for pareto is 0")
+  }
+}
+
+#' Error check for poisson out of bounds
+#' 
+#' @inheritParams errorCheckBounds
+#' @export
+errorCheckBounds.poisson <- function(boundsvec) {
+  if(boundsVec[2] <= 0) {
+    stop("Absolute lower bound for poisson is 0")
+  }
+}
+
+#' Error check for geometric out of bounds
+#' 
+#' @inheritParams errorCheckBounds
+#' @export
+errorCheckBounds.geometric <- function(boundsvec) {
+  if(boundsVec[2] <= 0) {
+    stop("Absolute lower bound for geometric is 0")
+  }
+}
