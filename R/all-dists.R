@@ -154,7 +154,7 @@ allDistributions <- function() {
         param2 = NULL,
         param3 = NULL
         ),
-      bounds = c(1, Inf),
+      bounds = c(0, Inf),
       discrete = TRUE
       ),
 
