@@ -74,6 +74,21 @@ fitdist_Alteryx.triangle <- function(x, ...){
   list(a = a, b = b, c = c)
 }
 
+#' Fit binomial 
+#' 
+#' @inheritParams fitdist_Alteryx
+#' @return parameter list with elements:
+#'    size
+#'    prob
+#' @export
+fitdist_Alteryx.binom <- function(x, ...) {
+  m <- mean(x$data)
+  prob1 <- 1 - (var(x$data)/m)
+  size <- round(m/prob1,0)
+  prob <- m/size
+  list(size = size, prob = prob)
+}
+
 #' Apply best fit function and catch potential errors
 #' Necessary for impossible function fitting
 #' Example: fitting lognormal on negative values
