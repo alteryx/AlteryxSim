@@ -4,7 +4,7 @@
 \alias{fit_dists.default}
 \title{Fit single vector across all distributions to best parameters}
 \usage{
-\method{fit_dists}{default}(data, dist_list)
+fit_dists.default(data, dist_list)
 }
 \arguments{
 \item{data}{vector to fit}

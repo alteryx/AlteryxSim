@@ -67,11 +67,115 @@ fitdist_Alteryx.pareto <- function(x, ...){
 #' @import triangle
 #' @export
 fitdist_Alteryx.triangle <- function(x, ...){
+  fitdist_Alteryx.triangular(x, ...)
+}
+
+#' Fit triangular distribution
+#'
+#'
+#' @inheritParams fitdist_Alteryx
+#' @return parameter list with elements:
+#'    a - min x value
+#'    b - man y value
+#'    c - most likely x value
+#' @import triangle
+#' @export
+fitdist_Alteryx.triangular <- function(x, ...){
   x <- x$data
   a <- min(x)
   b <- max(x)
   c <- median(c(a, b, 3*sum(x)/length(x)-a-b))
-  list(a = a, b = b, c = c)
+  list(
+    distribution = "triangular",
+    estimate = list(a = a, b = b, c = c),
+    data = x
+  )
+}
+
+#' Fit binomial 
+#' 
+#' @inheritParams fitdist_Alteryx
+#' @return parameter list with elements:
+#'    size
+#'    prob
+#' @export
+fitdist_Alteryx.binom <- function(x, ...) {
+  fitdist_Alteryx.binomial(x, ...)
+}
+
+#' Fit binomial distribution
+#' 
+#' @inheritParams fitdist_Alteryx
+#' @return parameter list with elements:
+#'    size
+#'    prob
+#' @export
+fitdist_Alteryx.binomial <- function(x, ...) {
+  m <- mean(x$data)
+  prob1 <- 1 - (var(x$data)/m)
+  size <- round(m/prob1,0)
+  size <- ifelse(size ==0, 1, size)
+  prob <- m/size
+  list(
+    distribution = "binomial",
+    estimate = list(size = size, prob = prob),
+    data = x
+  )
+}
+
+#' Fit poisson distribution 
+#' 
+#' @inheritParams fitdist_Alteryx
+#' @return parameter list with elements:
+#'    lambda
+#' @export
+fitdist_Alteryx.poisson <- function(x, ...) {
+  m <- mean(x$data)
+  if(m > 0 && m < 1) {
+    m <- 1
+  } else {
+    m <- round(m, 0)
+  }
+  list(
+    distribution = "poisson",
+    estimate = list(lambda = m),
+    data = x
+  )
+}
+
+#' Fit poisson distribution 
+#' 
+#' @inheritParams fitdist_Alteryx
+#' @return parameter list with elements:
+#'    lambda
+#' @export
+fitdist_Alteryx.pois <- function(x, ...) {
+  fitdist_Alteryx.poisson(x, ...)
+}
+
+#' Fit geometric distribution 
+#' 
+#' @inheritParams fitdist_Alteryx
+#' @return parameter list with elements:
+#'    prob
+#' @export
+fitdist_Alteryx.geometric <- function(x, ...) {
+  list(
+    distribution = "geometric",
+    estimate = list(prob = 1/(mean(x$data))),
+    data = x
+  )
+}
+
+
+#' Fit geometric distribution 
+#' 
+#' @inheritParams fitdist_Alteryx
+#' @return parameter list with elements:
+#'    prob
+#' @export
+fitdist_Alteryx.geom <- function(x, ...) {
+  fitdist_Alteryx.geometric(x, ...)
 }
 
 #' Apply best fit function and catch potential errors
@@ -89,6 +193,8 @@ try_fit_best_single <- function (data, distribution) {
   )
 }
 
+
+
 #' Get info on fitting and gof
 #'
 #' @inheritParams try_fit_best_single
@@ -96,8 +202,26 @@ try_fit_best_single <- function (data, distribution) {
 #' @export
 fit_info <- function (data, distribution) {
   tried_fit <- try_fit_best_single(data, distribution)
-  params <- ifelse(is.na(tried_fit[[1]]), NA, tried_fit$estimate)
-  list(params = params, distribution = distribution, chisq = chi_sq(tried_fit))
+  if(is.na(tried_fit)) {
+    params <- NA
+  } else  {
+    params <- tried_fit$estimate
+  }
+  list(params = params, distribution = distribution, chisq = chi_sq(list(data = data, distribution = distribution, estimate = params)))
+}
+
+#' Generic non-S3 method for distribution fitting
+#' 
+#' @inheritParams fit_dists
+#' @export
+fit_dists2 <- function(data, dist_list) {
+  if(class(data) == "numeric" || class(data) == "integer") {
+    fit_dists.numeric(data, dist_list)
+  } else if(class(data) == "data.frame") {
+    fit_dists.data.frame(data, dist_list)
+  } else {
+    fit_dists.default(data, dist_list)
+  }
 }
 
 #' Generic method for fitting over vector of distributions
@@ -107,7 +231,8 @@ fit_info <- function (data, distribution) {
 #' @return best fits for distribution
 #' @export
 fit_dists <- function(data, dist_list) {
-  UseMethod('fit_dists')
+ # UseMethod('fit_dists')
+  fit_dists2(data,dist_list)
 }
 
 #' Fit single vector across all distributions to best parameters
@@ -132,7 +257,7 @@ fit_dists.numeric <- function(data, dist_list) {
 #' @export
 fit_dists.data.frame <- function(data, dist_list) {
   fit_by_col <- function(vec) {
-    fit_dists(vec, dist_list)
+    fit_dists2(vec, dist_list)
   }
   apply(data, 2, FUN = fit_by_col)
 }

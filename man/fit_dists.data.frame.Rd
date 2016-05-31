@@ -4,7 +4,7 @@
 \alias{fit_dists.data.frame}
 \title{Fit each column to best fitting distribution and distribution params}
 \usage{
-\method{fit_dists}{data.frame}(data, dist_list)
+fit_dists.data.frame(data, dist_list)
 }
 \arguments{
 \item{data}{vector to fit}
