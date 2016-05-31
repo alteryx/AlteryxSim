@@ -13,7 +13,7 @@ chi_sq(fit_obj)
 chi squared statistic
 }
 \description{
-Convert a fit to corresponding chisq value
+Convert a fit
 }
 \examples{
 \dontrun{
