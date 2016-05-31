@@ -10,8 +10,6 @@
 #'   chi_sq(fit_best_single(rnorm(100), "triangle"))
 #' }
 chi_sq <- function (fit_obj) {
-  print("fit_obj")
-  print(fit_obj)
   if(is.na(fit_obj) || is.null(fit_obj)) {
     return (Inf)
   } else if (class(fit_obj)=='fitdist') {

@@ -201,8 +201,6 @@ try_fit_best_single <- function (data, distribution) {
 #' @return list with elements 'distribution', 'params', and 'chisq'
 #' @export
 fit_info <- function (data, distribution) {
-  print("fit_info_dist")
-  print(distribution)
   tried_fit <- try_fit_best_single(data, distribution)
   if(is.na(tried_fit)) {
     params <- NA
@@ -222,7 +220,6 @@ fit_dists2 <- function(data, dist_list) {
   } else if(class(data) == "data.frame") {
     fit_dists.data.frame(data, dist_list)
   } else {
-    print(str(data))
     fit_dists.default(data, dist_list)
   }
 }
