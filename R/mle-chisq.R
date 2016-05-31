@@ -1,5 +1,7 @@
 #' Convert a fit to corresponding chisq value
 #'
+#' Convert a fit
+#'
 #' @param fit_obj object fit by
 #' @return chi squared statistic
 #' @import fitdistrplus
@@ -24,6 +26,8 @@ chi_sq <- function (fit_obj) {
 }
 
 #' Get chi squared value from MLE for custom mle function for continuous dists
+#'
+#'
 #'
 #' @param custom_mle named list containing 'data' vector, 'distribution' name,
 #'   and 'param_list' list
@@ -64,7 +68,9 @@ custom_chisq <- function(custom_mle) {
   return (sum((summary(obs)-expected)^2/expected))
 }
 
-# Get chisq value from MLE for custom chisq function for discrete dists
+#' Get chisq value from MLE for custom chisq function for discrete dists
+#'
+#'
 #'
 #' @param custom_mle named list containing 'data' vector, 'distribution' name,
 #'   and 'param_list' list
