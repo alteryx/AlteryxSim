@@ -5,8 +5,22 @@
 #' @return function accepting argument for number of samples to draw which would draw samples from best fitting distribution
 #' @export
 process_fit_element <- function (fit_element, type = "MC") {
-  chi2s <- mapply(FUN = '[[', fit_element, "chisq")
+#   print(class(fit_element))
+#   print(str(fit_element))
+  print(fit_element)
+  print("ok1")
+  #getChi2 <- function(x) x$chisq
+  n <- length(fit_element)
+  chi2s <- rep(NA, n)
+  for (i in 1:n) {
+    chi2s[i] <- fit_element[[i]]$chisq
+  }
+  # chi2s <- lapply(fit_element, function(x) print(class(x)), simplify = FALSE)
+  # chi2s <- mapply(FUN = '[[', fit_element, "chisq")
+  # chi2s <- lapply(fit_element, function(x) x$chisq, simplify = )
+  print('ok2')
   best_fit_index <- which(chi2s == min(chi2s))[1]
+  print(str(chi2s))
   if(chi2s[best_fit_index] == Inf) {
     stop("No successful fits")
   }
@@ -38,7 +52,9 @@ fapply <- function(fxns, arg) {
 #' @export
 sample_best <- function (data, dist_list = Alteryx_distributions_continuous(), type = "MC") {
   fits <- fit_dists(data = data, dist_list = dist_list)
-  sampling_functions <- mapply(FUN = process_fit_element, fits, MoreArgs = list(type = type))
+  print(class(fits))
+  # AlteryxMessage(class(fits), iType = 2, iPriority = 3)
+  sampling_functions <- mapply(FUN = process_fit_element, fit_element = fits, MoreArgs = list(type = type))
   function (m) {
     as.data.frame(fapply(sampling_functions, m))
   }
