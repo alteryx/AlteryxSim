@@ -14,11 +14,12 @@ param_process <- function(method, chunkSize, count, distribution, params, bounds
   x <- params
   class(x) <- distribution
   errorCheckParams(x)
+  AlteryxRDataX::write.Alteryx(data.frame(`temp` = 0), 1)
   bounds <- c(min(bounds), max(bounds))
   y <- bounds 
   class(y) <- distribution
   #errorCheckBounds(y)
-  doInChunks(nOutput = 1, total_size = count, chunk_size = chunkSize, names = c(name)) (
+  doInChunks(nOutput = 3, total_size = count, chunk_size = chunkSize, names = c(name)) (
     rej_sample_from_dist(
       distribution = distribution,
       param_list = params,
@@ -43,13 +44,20 @@ param_process <- function(method, chunkSize, count, distribution, params, bounds
 #' @export
 entire_process <- function(method, chunkSize, count, data, dataName, replace, totalSize) {
   strat <- method == 'LH'
+  print("Entire process...")
   if(!is.null(data)) {
+    print("Do in chunks...")
     doInChunks(nOutput = 1, total_size = count, chunk_size = chunkSize) (sample_df(df = data, replace = replace))
   } else {
+    print("Map reduce chunk arg...")
     sampleSizes <- getSampleSizes(chunkSize, totalSize, count, replace, strat)
     mapfxn <- function(data, chunkNumber) {
+      print(chunkNumber)
+      print(str(data))
       numSamples <- sampleSizes[chunkNumber]
       AlteryxRDataX::write.Alteryx(sample_df(df = data, replace = replace) (numSamples),1)
+      print("Done with chunk...")
+      print(chunkNumber)
     }
     mapReduceChunkArg(dataName, chunkSize, totalSize, NULL) (mapfxn, NULL)
   }
@@ -68,6 +76,8 @@ each_process <- function(method, chunkSize, count, data, dataName, replace, tota
   } else {
     sampleSizes <- getSampleSizes(chunkSize, totalSize, count, replace, strat)
     mapfxn <- function(data, chunkNumber) {
+      print("Processing chunk...")
+      print(chunkNumber)
       numSamples <- sampleSizes[chunkNumber]
       AlteryxRDataX::write.Alteryx(sample_df_indep(df = data, replace = replace) (numSamples),1)
     }
@@ -112,6 +122,8 @@ best_process <- function(method, chunkSize, count, data, dataName, possible) {
 data_process <- function(method, chunkSize, count, process, possible, type, id, value, name, 
     roulette, dataName, replace, totalSize){
   data <- NULL
+  print("Data Process...")
+  AlteryxRDataX::write.Alteryx(data.frame(Variable = 0), 3)
   if(type == "binned") {
     data <- AlteryxRDataX::read.Alteryx(dataName)
     idVec <- data[, id]
@@ -162,6 +174,7 @@ tool_process <- function(method, chunkSize, seed, count, distribution,
   params, bounds, process, possible, type, id, value, name, roulette, dataName, 
   sampleSource, replace, totalSize){
   set.seed(seed)
+  print("Tool Process...")
   switch(sampleSource,
     parametric = param_process(
       method = method,
