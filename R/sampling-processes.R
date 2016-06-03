@@ -47,7 +47,7 @@ entire_process <- function(method, chunkSize, count, data, dataName, replace, to
   print("Entire process...")
   if(!is.null(data)) {
     print("Do in chunks...")
-    doInChunks(nOutput = 1, total_size = count, chunk_size = chunkSize) (sample_df(df = data, replace = replace))
+    doInChunks(nOutput = getOption('ayxsim.data.noutput'), total_size = count, chunk_size = chunkSize) (sample_df(df = data, replace = replace))
   } else {
     print("Map reduce chunk arg...")
     sampleSizes <- getSampleSizes(chunkSize, totalSize, count, replace, strat)
@@ -55,7 +55,10 @@ entire_process <- function(method, chunkSize, count, data, dataName, replace, to
       print(chunkNumber)
       print(str(data))
       numSamples <- sampleSizes[chunkNumber]
-      AlteryxRDataX::write.Alteryx(sample_df(df = data, replace = replace) (numSamples),1)
+      AlteryxRDataX::write.Alteryx(
+        sample_df(df = data, replace = replace) (numSamples),
+        getOption('ayxsim.data.noutput')
+      )
       print("Done with chunk...")
       print(chunkNumber)
     }
@@ -72,14 +75,17 @@ entire_process <- function(method, chunkSize, count, data, dataName, replace, to
 each_process <- function(method, chunkSize, count, data, dataName, replace, totalSize) {
   strat <- method == 'LH'
   if(!is.null(data)) {
-    doInChunks(nOutput = 1, total_size = count, chunk_size = chunkSize) (sample_df_indep(df = data, replace = replace))
+    doInChunks(nOutput = getOption('ayxsim.data.noutput'), total_size = count, chunk_size = chunkSize) (sample_df_indep(df = data, replace = replace))
   } else {
     sampleSizes <- getSampleSizes(chunkSize, totalSize, count, replace, strat)
     mapfxn <- function(data, chunkNumber) {
       print("Processing chunk...")
       print(chunkNumber)
       numSamples <- sampleSizes[chunkNumber]
-      AlteryxRDataX::write.Alteryx(sample_df_indep(df = data, replace = replace) (numSamples),1)
+      AlteryxRDataX::write.Alteryx(
+        sample_df_indep(df = data, replace = replace) (numSamples),
+        getOption('ayxsim.data.noutput')
+      )
     }
     mapReduceChunkArg(dataName, chunkSize, totalSize, NULL) (mapfxn, NULL)
   }
@@ -99,7 +105,10 @@ best_process <- function(method, chunkSize, count, data, dataName, possible) {
   if(is.null(data)) {
     data <- AlteryxRDataX::read.Alteryx(dataName)
   }
-  doInChunks(nOutput = 1, total_size = count, chunk_size = chunkSize) (sample_best(data = data, dist_list = possible, type = method))
+  doInChunks(nOutput =  getOption('ayxsim.data.noutput'), 
+     total_size = count, chunk_size = chunkSize) (
+    sample_best(data = data, dist_list = possible, type = method)
+  )
 }
 
 #' Code for processing data inputs
@@ -123,22 +132,29 @@ data_process <- function(method, chunkSize, count, process, possible, type, id, 
     roulette, dataName, replace, totalSize){
   data <- NULL
   print("Data Process...")
-  AlteryxRDataX::write.Alteryx(data.frame(Variable = 0), 3)
+  options('ayxsim.data.noutput' = 1)
   if(type == "binned") {
     data <- AlteryxRDataX::read.Alteryx(dataName)
     idVec <- data[, id]
     valVec <- data[, value]
-    data <- data.frame(id = idVec, count <- valVec)
+    data <- data.frame(id = idVec, count = valVec)
+    options('ayxsim.data.noutput' = 3)
   }
   if(type == "manual") {
     idVec <- as.numeric(names(roulette))
     valVec <- unlist(roulette, use.names = F)
     data <- data.frame(id = idVec, count = valVec)
     type = "binned"
+    options('ayxsim.data.noutput' = 3)
   }
   if(type == "binned") {
     data <- data.frame(data = bin_to_data(bins = data))
     names(data) <- c(name)
+  }
+  if (type == "raw"){
+    AlteryxRDataX::write.Alteryx(data.frame(Variable = 0), 3)
+  } else {
+    AlteryxRDataX::write.Alteryx(data.frame(`temp` = 0), 1)
   }
   switch(process,
     entire = entire_process(method, chunkSize, count, data, dataName, replace, totalSize),
