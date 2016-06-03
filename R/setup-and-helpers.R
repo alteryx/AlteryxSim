@@ -108,6 +108,14 @@ doInChunks <- function(nOutput, total_size, chunk_size, names = NULL){
   }
 }
 
+stop <- function(...){
+  if ("AlteryxRDataX" %in% search()){
+    AlteryxRDataX::stop.Alteryx(...)
+  } else {
+    base::stop(...)
+  }
+}
+
 #' Generic check for illegal parameters; throws error if params out of bounds
 #' 
 #' @param paramList list of parameters
@@ -144,7 +152,7 @@ errorCheckParams.triangular <- function(paramList) {
 
 #' Generic error check for illegal bounds; throws error if set bound is outside of absolute bound
 #' 
-#' @param boundsVec 
+#' @param boundsVec vector of bounds
 #' @export
 errorCheckBounds <- function(boundsVec) {
   UseMethod("errorCheckBounds")
@@ -160,7 +168,7 @@ errorCheckBounds.default <- function(boundsVec) {}
 #' 
 #' @inheritParams errorCheckBounds
 #' @export
-errorCheckBounds.binomial <- function(boundsvec) {
+errorCheckBounds.binomial <- function(boundsVec) {
   if(boundsVec[2] <= 0) {
     stop("Absolute lower bound for binomial is 0")
   }
@@ -170,7 +178,7 @@ errorCheckBounds.binomial <- function(boundsvec) {
 #' 
 #' @inheritParams errorCheckBounds
 #' @export
-errorCheckBounds.gamma <- function(boundsvec) {
+errorCheckBounds.gamma <- function(boundsVec) {
   if(boundsVec[2] <= 0) {
     stop("Absolute lower bound for gamma is 0")
   }
@@ -180,7 +188,7 @@ errorCheckBounds.gamma <- function(boundsvec) {
 #' 
 #' @inheritParams errorCheckBounds
 #' @export
-errorCheckBounds.lognormal <- function(boundsvec) {
+errorCheckBounds.lognormal <- function(boundsVec) {
   if(boundsVec[2] <= 0) {
     stop("Absolute lower bound for lognormal is 0")
   }
@@ -190,7 +198,7 @@ errorCheckBounds.lognormal <- function(boundsvec) {
 #' 
 #' @inheritParams errorCheckBounds
 #' @export
-errorCheckBounds.pareto <- function(boundsvec) {
+errorCheckBounds.pareto <- function(boundsVec) {
   if(boundsVec[2] <= 0) {
     stop("Absolute lower bound for pareto is 0")
   }
@@ -200,7 +208,7 @@ errorCheckBounds.pareto <- function(boundsvec) {
 #' 
 #' @inheritParams errorCheckBounds
 #' @export
-errorCheckBounds.poisson <- function(boundsvec) {
+errorCheckBounds.poisson <- function(boundsVec) {
   if(boundsVec[2] <= 0) {
     stop("Absolute lower bound for poisson is 0")
   }
@@ -210,7 +218,7 @@ errorCheckBounds.poisson <- function(boundsvec) {
 #' 
 #' @inheritParams errorCheckBounds
 #' @export
-errorCheckBounds.geometric <- function(boundsvec) {
+errorCheckBounds.geometric <- function(boundsVec) {
   if(boundsVec[2] <= 0) {
     stop("Absolute lower bound for geometric is 0")
   }
