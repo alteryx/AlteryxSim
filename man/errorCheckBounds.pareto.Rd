@@ -4,7 +4,10 @@
 \alias{errorCheckBounds.pareto}
 \title{Error check for pareto out of bounds}
 \usage{
-\method{errorCheckBounds}{pareto}(boundsvec)
+\method{errorCheckBounds}{pareto}(boundsVec)
+}
+\arguments{
+\item{boundsVec}{vector of bounds}
 }
 \description{
 Error check for pareto out of bounds

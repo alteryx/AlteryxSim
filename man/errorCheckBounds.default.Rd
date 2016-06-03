@@ -7,7 +7,7 @@
 \method{errorCheckBounds}{default}(boundsVec)
 }
 \arguments{
-\item{boundsVec}{}
+\item{boundsVec}{vector of bounds}
 }
 \description{
 Default error check for bounds method

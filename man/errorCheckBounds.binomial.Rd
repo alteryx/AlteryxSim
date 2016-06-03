@@ -4,7 +4,10 @@
 \alias{errorCheckBounds.binomial}
 \title{Error check for binomial out of bounds}
 \usage{
-\method{errorCheckBounds}{binomial}(boundsvec)
+\method{errorCheckBounds}{binomial}(boundsVec)
+}
+\arguments{
+\item{boundsVec}{vector of bounds}
 }
 \description{
 Error check for binomial out of bounds

@@ -4,7 +4,10 @@
 \alias{errorCheckBounds.gamma}
 \title{Error check for gamma out of bounds}
 \usage{
-\method{errorCheckBounds}{gamma}(boundsvec)
+\method{errorCheckBounds}{gamma}(boundsVec)
+}
+\arguments{
+\item{boundsVec}{vector of bounds}
 }
 \description{
 Error check for gamma out of bounds

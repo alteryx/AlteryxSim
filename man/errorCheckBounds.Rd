@@ -7,7 +7,7 @@
 errorCheckBounds(boundsVec)
 }
 \arguments{
-\item{boundsVec}{}
+\item{boundsVec}{vector of bounds}
 }
 \description{
 Generic error check for illegal bounds; throws error if set bound is outside of absolute bound

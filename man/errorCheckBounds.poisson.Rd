@@ -4,7 +4,10 @@
 \alias{errorCheckBounds.poisson}
 \title{Error check for poisson out of bounds}
 \usage{
-\method{errorCheckBounds}{poisson}(boundsvec)
+\method{errorCheckBounds}{poisson}(boundsVec)
+}
+\arguments{
+\item{boundsVec}{vector of bounds}
 }
 \description{
 Error check for poisson out of bounds

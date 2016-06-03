@@ -4,7 +4,10 @@
 \alias{errorCheckBounds.geometric}
 \title{Error check for geometric out of bounds}
 \usage{
-\method{errorCheckBounds}{geometric}(boundsvec)
+\method{errorCheckBounds}{geometric}(boundsVec)
+}
+\arguments{
+\item{boundsVec}{vector of bounds}
 }
 \description{
 Error check for geometric out of bounds

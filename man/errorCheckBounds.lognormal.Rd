@@ -4,7 +4,10 @@
 \alias{errorCheckBounds.lognormal}
 \title{Error check for lognormal out of bounds}
 \usage{
-\method{errorCheckBounds}{lognormal}(boundsvec)
+\method{errorCheckBounds}{lognormal}(boundsVec)
+}
+\arguments{
+\item{boundsVec}{vector of bounds}
 }
 \description{
 Error check for lognormal out of bounds
