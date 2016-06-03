@@ -18,7 +18,7 @@ param_process <- function(method, chunkSize, count, distribution, params, bounds
   bounds <- c(min(bounds), max(bounds))
   y <- bounds 
   class(y) <- distribution
-  #errorCheckBounds(y)
+  errorCheckBounds(y)
   doInChunks(nOutput = 3, total_size = count, chunk_size = chunkSize, names = c(name)) (
     rej_sample_from_dist(
       distribution = distribution,
