@@ -6,7 +6,7 @@
 #' @export
 simulateGLM <- function(object, nsim) {
   function(new_data) {
-    new_preds <- predict(object, new_data)
+    new_preds <- predict(object, new_data, type = 'response')
     object$fitted.values <- new_preds
     simulate(object = object, nsim = nsim, seed = NULL)
   }
