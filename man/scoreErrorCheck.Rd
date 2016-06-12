@@ -4,12 +4,12 @@
 \alias{scoreErrorCheck}
 \title{Error check to ensure model class matches "isGLM"}
 \usage{
-scoreErrorCheck(model, isGLM)
+scoreErrorCheck(model, isLM)
 }
 \arguments{
 \item{model}{model to check}
 
-\item{isGLM}{boolean to compare}
+\item{isLM}{boolean to compare}
 }
 \value{
 no return - just throws error if mismatch
