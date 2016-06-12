@@ -2,32 +2,29 @@
 % Please edit documentation in R/scoring.R
 \name{scoreProcess}
 \alias{scoreProcess}
-\title{Code to execute core of simulation scoring code}
+\title{Function to score model with added samples from an error distribution}
 \usage{
-scoreProcess(model, isGLM, mult, totalCountSim, validation, seed, chunkSize,
-  scoreName)
+scoreProcess(model, isGLM, mult, totalCountSim, validationData, seed, chunkSize)
 }
 \arguments{
-\item{model}{model object to score from}
+\item{model}{model object to score against}
 
-\item{isGLM}{boolean predicting whether object will be glm/lm class}
+\item{isGLM}{boolean of whether model is of class lm/glm}
 
-\item{mult}{number of draws from error distribution for each record}
+\item{mult}{number of samples from error distribution per record}
 
-\item{totalCountSim}{total number of records to be scored}
+\item{totalCountSim}{total number of incoming records}
 
-\item{validation}{validation data incoming}
+\item{validationData}{dataframe of validation data}
 
 \item{seed}{random seed}
 
-\item{chunkSize}{maximal chunk size for scored data}
-
-\item{scoreName}{name to give to scored variable}
+\item{chunkSize}{maximal size of incoming data chunk}
 }
 \value{
-nothing - function writes out score df to Alteryx
+function taking data and scoring on it, sampling from error dist
 }
 \description{
-Code to execute core of simulation scoring code
+Function to score model with added samples from an error distribution
 }
 
