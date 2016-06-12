@@ -1,5 +1,6 @@
 #' Check for missing predictors in score data as compared to the model
 #' 
+#' 
 #' @param model model object
 #' @param data data to score
 checkForMissingXVars <- function(model, data){
@@ -20,11 +21,11 @@ checkForMissingXVars <- function(model, data){
 #' 
 #' 
 #' 
-#'  @param model model object
-#'  @param data data to score 
+#' @param model model object
+#' @param data data to score 
 removeMissingLevels <- function(model, data){
   rel.data <- data
-  xlevels <- getXlevels(model)
+  xlevels <- AlteryxRDataX::getXlevels(model)
   rd.levels <- lapply(Filter(is.factor, rel.data), levels)
   mod.class <- class(model)[1]
   # Remove the records and re-do the factors to remove the missing levels
@@ -75,7 +76,7 @@ prepareDataForScoring <- function(model, data){
 #' Error check to ensure model class matches "isGLM"
 #'
 #' @param model model to check
-#' @param isGLM boolean to compare
+#' @param isLM boolean to compare
 #' @return no return - just throws error if mismatch
 #' @export
 scoreErrorCheck <- function(model, isLM) {
@@ -150,7 +151,8 @@ simNonGLM <- function(mod.obj, errors, nsim) {
 
 #' Repurpose {stats} package 'simulate' function to work on new data
 #' 
-#' @param object model object to score from
+#' 
+#' @param mod.obj model object to score from
 #' @param nsim number of draws per record
 #' @return function taking new data and simulating scores
 #' @export
