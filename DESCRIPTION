@@ -1,7 +1,7 @@
 Package: AlteryxSim
 Type: Package
 Title: R package for Alteryx simulation tools
-Version: 0.3.6
+Version: 0.3.7
 Date: 2016-03-23
 Authors@R: c(
     person("Dylan", "Blanchard", role = "aut"),
