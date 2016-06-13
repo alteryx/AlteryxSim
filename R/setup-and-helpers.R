@@ -5,7 +5,7 @@
 #' @examples
 #'    Alteryx_distributions_continuous()
 Alteryx_distributions_continuous <- function() {
-  c("normal", "gamma", "lognormal", "uniform", "triangular", "pareto")
+  c("normal", "gamma", "lognormal", "uniform", "triangular", "pareto", "paretoAlteryx")
 }
 
 #' Get discrete distributions supported by Alteryx tools
@@ -41,7 +41,7 @@ convert_dist <- function(distribution) {
     normal = "norm",
     gamma = "gamma",
     lognormal = "lnorm",
-    pareto = "pareto",
+    pareto = "paretoAlteryx",
     uniform = "unif",
     triangular = "triangle",
     geometric = "geom",
@@ -204,6 +204,16 @@ errorCheckBounds.pareto <- function(boundsVec) {
   }
 }
 
+#' Error check for pareto out of bounds
+#' 
+#' @inheritParams errorCheckBounds
+#' @export
+errorCheckBounds.paretoAlteryx <- function(boundsVec) {
+  if(boundsVec[2] <= 0) {
+    stop("Absolute lower bound for pareto is 0")
+  }
+}
+
 #' Error check for poisson out of bounds
 #' 
 #' @inheritParams errorCheckBounds
@@ -222,4 +232,26 @@ errorCheckBounds.geometric <- function(boundsVec) {
   if(boundsVec[2] <= 0) {
     stop("Absolute lower bound for geometric is 0")
   }
+}
+
+#' pareto inverse CDF function
+#' 
+#' @param p probability
+#' @param shape shape parameter (minimum x)
+#' @param scale scale parameter
+#' @return value
+#' @export
+qparetoAlteryx <- function(p, shape, scale) {
+  shape*(1-p)^{-1/scale}
+}
+
+#' pareto random sampling function
+#' 
+#' @param shape shape parameter (minimum x)
+#' @param scale scale parameter
+#' @return vector of random values
+#' @export
+rparetoAlteryx <- function(n, shape, scale) {
+  x <- runif(n)
+  qparetoAlteryx(x, shape, scale)
 }
