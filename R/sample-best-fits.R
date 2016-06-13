@@ -8,7 +8,8 @@ process_fit_element <- function (fit_element, type = "MC") {
   n <- length(fit_element)
   chi2s <- rep(NA, n)
   for (i in 1:n) {
-    chi2s[i] <- fit_element[[i]]$chisq
+    c2 <- fit_element[[i]]$chisq
+    chi2s[i] <- ifelse(is.na(c2), Inf, c2)
   }
   # chi2s <- lapply(fit_element, function(x) print(class(x)), simplify = FALSE)
   # chi2s <- mapply(FUN = '[[', fit_element, "chisq")
