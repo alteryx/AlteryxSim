@@ -136,6 +136,7 @@ simNonGLM <- function(mod.obj, errors, nsim) {
   function(scoreData){
     RecordID <- scoreData[,1]
     scoreData <- prepareDataForScoring(mod.obj, scoreData)
+    # we dont need to remove the recordID column
     scores <- AlteryxRDataX::scoreModel(mod.obj, scoreData[,-1])
     scores <- scores[,NCOL(scores)]
     
