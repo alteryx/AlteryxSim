@@ -69,7 +69,7 @@ prepareDataForScoring <- function(model, data){
   
   # Adjust score data to remove missing levels 
   rel.data <- removeMissingLevels(model, rel.data)
-  rel.data
+  cbind(RecordID = data$RecordID, rel.data)
 }
 
 
@@ -107,7 +107,7 @@ getTarVarName<- function(model){
 getErrorVec <- function(the.data, mod.obj) {
   tarVarName <- getTarVarName(mod.obj)
   validation <- prepareDataForScoring(mod.obj, the.data)
-  predVal <- AlteryxRDataX::scoreModel(mod.obj, validation)
+  predVal <- AlteryxRDataX::scoreModel(mod.obj, validation[,-1])
   if(NCOL(predVal)>2) {
     stop("Scoring on categorical variables with more than 2 levels not supported")
   }
@@ -134,8 +134,9 @@ getScore <- function(x) {
 #' @export
 simNonGLM <- function(mod.obj, errors, nsim) {
   function(scoreData){
+    RecordID <- scoreData[,1]
     scoreData <- prepareDataForScoring(mod.obj, scoreData)
-    scores <- AlteryxRDataX::scoreModel(mod.obj, scoreData)
+    scores <- AlteryxRDataX::scoreModel(mod.obj, scoreData[,-1])
     scores <- scores[,NCOL(scores)]
     
     errorSample <- sample(errors, length(scores)*nsim, replace = TRUE)
@@ -145,7 +146,8 @@ simNonGLM <- function(mod.obj, errors, nsim) {
     results <- sapply(results, getScore)
     scoreData <- scoreData[rep(seq_len(nrow(scoreData)), nsim), ]
     scoreData$"asdfasdfresultsasdfasdf" <- results
-    scoreData
+    scoreData$RecordID <- RecordID
+    scoreData[,c('asdfasdfresultsasdfasdf', 'RecordID')]
   }
 }
 
@@ -158,6 +160,7 @@ simNonGLM <- function(mod.obj, errors, nsim) {
 #' @export
 simGLM <- function(mod.obj, nsim) {
   function(scoreData) {
+    RecordID <- scoreData[,1]
     scoreData <- prepareDataForScoring(mod.obj, scoreData)
     preds <- AlteryxRDataX::scoreModel(mod.obj, scoreData)
     scores <- preds[,NCOL(preds)]
@@ -166,7 +169,8 @@ simGLM <- function(mod.obj, nsim) {
     x <- as.vector(unlist(simulate(object = mod.obj, nsim = nsim, seed = NULL, type = "link")))
     data <- scoreData[rep(seq_len(nrow(scoreData)), nsim), ]
     data$"asdfasdfresultsasdfasdf" <- x
-    data
+    data$RecordID <- RecordID
+    data[,c('asdfasdfresultsasdfasdf', 'RecordID')]
   }
 }
 
