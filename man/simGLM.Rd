@@ -7,9 +7,9 @@
 simGLM(mod.obj, nsim)
 }
 \arguments{
-\item{nsim}{number of draws per record}
+\item{mod.obj}{model object to score from}
 
-\item{object}{model object to score from}
+\item{nsim}{number of draws per record}
 }
 \value{
 function taking new data and simulating scores

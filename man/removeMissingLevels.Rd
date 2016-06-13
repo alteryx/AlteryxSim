@@ -6,8 +6,12 @@
 \usage{
 removeMissingLevels(model, data)
 }
-\details{
-@param model model object
- @param data data to score
+\arguments{
+\item{model}{model object}
+
+\item{data}{data to score}
+}
+\description{
+Remove missing levels from score data based on model data
 }
 
