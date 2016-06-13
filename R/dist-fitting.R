@@ -8,8 +8,8 @@
 #'    fit_best_single(rnorm(100), "normal")
 #'    # fit_best_single(rtriangle(100), "triangle")
 fit_best_single <- function(data, distribution){
-  x <- list(data = data, distribution = distribution)
-  class(x) <- c(class(x), distribution)
+  x <- list(data = data, distribution = convert_dist(distribution))
+  class(x) <- c(class(x), convert_dist(distribution))
   fitdist_Alteryx(x)
 }
 
@@ -48,12 +48,26 @@ fitdist_Alteryx.pareto <- function(x, ...){
   if(xm <= 0) {
     stop("Error in pareto_mle: values must be positive to fit a pareto distribution")
   }
-  alpha <- length(x)/(sum(log(x))-length(x)*log(xm))
+  alpha <- length(x)/(sum(log(x)-log(xm)))
   list(
-    distribution = "pareto", 
-    estimate = list(xm = xm, alpha = alpha), 
+    distribution = convert_dist("pareto"), 
+    estimate = list(shape = xm, scale = alpha), 
     data = x
   )
+}
+
+#' Fit pareto distribution
+#'
+#'
+#'
+#' @inheritParams fitdist_Alteryx
+#' @return parameter list with elements:
+#'    xm - min x val for distribution
+#'    alpha - shape parameter
+#' @import actuar
+#' @export
+fitdist_Alteryx.paretoAlteryx <- function(x, ...){
+  fitdist_Alteryx.pareto(x, ...)
 }
 
 #' Fit triangular distribution
@@ -207,7 +221,7 @@ fit_info <- function (data, distribution) {
   } else  {
     params <- tried_fit$estimate
   }
-  list(params = params, distribution = distribution, chisq = chi_sq(list(data = data, distribution = distribution, estimate = params)))
+  list(params = params, distribution = convert_dist(distribution), chisq = chi_sq(list(data = data, distribution = convert_dist(distribution), estimate = params)))
 }
 
 #' Generic non-S3 method for distribution fitting

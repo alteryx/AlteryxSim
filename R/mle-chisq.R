@@ -21,7 +21,7 @@ chi_sq <- function (fit_obj) {
   } else if (fit_obj$distribution %in% convert_dist(Alteryx_distributions_discrete())){
     return (custom_chisq_discrete(fit_obj))
   } else {
-    stop("unsupported distribution")
+    stop(paste0("unsupported distribution ", fit_obj$distribution))
   }
 }
 
@@ -41,6 +41,9 @@ chi_sq <- function (fit_obj) {
 #'    custom_chisq(fit_best_single(rnorm(100), "triangular"))
 #' }
 custom_chisq <- function(custom_mle) {
+  if(is.null(custom_mle$estimate) || is.na(custom_mle$estimate)){
+    return (Inf)
+  }
   distribution <- custom_mle$distribution
   dist_fun <- match.fun(paste0('q', convert_dist(distribution)))
   data <- custom_mle$data
