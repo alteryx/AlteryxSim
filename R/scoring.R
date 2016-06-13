@@ -69,7 +69,7 @@ prepareDataForScoring <- function(model, data){
   
   # Adjust score data to remove missing levels 
   rel.data <- removeMissingLevels(model, rel.data)
-  cbind(RecordID = data$RecordID, rel.data)
+  cbind(asdfasdfRecordIDasdfasdf = data$asdfasdfRecordIDasdfasdf, rel.data)
 }
 
 
@@ -147,8 +147,8 @@ simNonGLM <- function(mod.obj, errors, nsim) {
     results <- sapply(results, getScore)
     scoreData <- scoreData[rep(seq_len(nrow(scoreData)), nsim), ]
     scoreData$"asdfasdfresultsasdfasdf" <- results
-    scoreData$RecordID <- RecordID
-    scoreData[,c('asdfasdfresultsasdfasdf', 'RecordID')]
+    scoreData$"asdfasdfRecordIDasdfasdf" <- RecordID
+    scoreData[,c('asdfasdfresultsasdfasdf', 'asdfasdfRecordIDasdfasdf')]
   }
 }
 
@@ -170,8 +170,8 @@ simGLM <- function(mod.obj, nsim) {
     x <- as.vector(unlist(simulate(object = mod.obj, nsim = nsim, seed = NULL, type = "link")))
     data <- scoreData[rep(seq_len(nrow(scoreData)), nsim), ]
     data$"asdfasdfresultsasdfasdf" <- x
-    data$RecordID <- RecordID
-    data[,c('asdfasdfresultsasdfasdf', 'RecordID')]
+    data$"asdfasdfRecordIDasdfasdf" <- RecordID
+    data[,c('asdfasdfresultsasdfasdf', 'asdfasdfRecordIDasdfasdf')]
   }
 }
 
