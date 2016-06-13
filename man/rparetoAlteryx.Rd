@@ -7,6 +7,8 @@
 rparetoAlteryx(n, shape, scale)
 }
 \arguments{
+\item{n}{number of observations.}
+
 \item{shape}{shape parameter (minimum x)}
 
 \item{scale}{scale parameter}

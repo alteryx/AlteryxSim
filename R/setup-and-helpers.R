@@ -247,6 +247,8 @@ qparetoAlteryx <- function(p, shape, scale) {
 
 #' pareto random sampling function
 #' 
+#' 
+#' @param n number of observations.
 #' @param shape shape parameter (minimum x)
 #' @param scale scale parameter
 #' @return vector of random values
