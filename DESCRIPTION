@@ -8,8 +8,7 @@ Authors@R: c(
     person("Ramnath", "Vaidyanathan", role = c("aut", "cre"), email = "ramnath@alteryx.com"),
     person(family = "Alteryx", role = "cph")
    )
-Description: This package contains code that support the simulation tools
-  in Alteryx.
+Description: This package contains code that support the Simulation tools in Alteryx.
 License: GPL-3
 LazyData: TRUE
 RoxygenNote: 5.0.1
