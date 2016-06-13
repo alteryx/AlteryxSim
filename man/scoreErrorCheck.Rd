@@ -4,7 +4,7 @@
 \alias{scoreErrorCheck}
 \title{Error check to ensure model class matches "isGLM"}
 \usage{
-scoreErrorCheck(model, isGLM)
+scoreErrorCheck(model, isLM)
 }
 \arguments{
 \item{model}{model to check}
