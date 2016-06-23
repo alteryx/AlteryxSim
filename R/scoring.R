@@ -143,8 +143,11 @@ simNonGLM <- function(mod.obj, errors, nsim) {
     errorSample <- sample(errors, length(scores)*nsim, replace = TRUE)
     
     results <- errorSample + scores
-    
-    results <- sapply(results, getScore)
+    new.data <- matchLevels(scoreData, getXlevels(mod.obj))
+    y.levels <- getYlevels(mod.obj, new.data)
+    if (!is.null(y.levels)){
+      results <- sapply(results, getScore)
+    }
     scoreData <- scoreData[rep(seq_len(nrow(scoreData)), nsim), ]
     scoreData$"asdfasdfresultsasdfasdf" <- results
     scoreData$"asdfasdfRecordIDasdfasdf" <- RecordID
