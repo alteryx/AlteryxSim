@@ -143,8 +143,11 @@ simNonGLM <- function(mod.obj, errors, nsim) {
     errorSample <- sample(errors, length(scores)*nsim, replace = TRUE)
     
     results <- errorSample + scores
-    new.data <- matchLevels(scoreData, getXlevels(mod.obj))
-    y.levels <- getYlevels(mod.obj, new.data)
+    new.data <- AlteryxRDataX::matchLevels(
+      scoreData, 
+      AlteryxRDataX::getXlevels(mod.obj)
+    )
+    y.levels <- AlteryxRDataX::getYlevels(mod.obj, new.data)
     if (!is.null(y.levels)){
       results <- sapply(results, getScore)
     }
