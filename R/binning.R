@@ -14,7 +14,7 @@ bin_to_data <- function (bins, discrete = FALSE) {
     }
     width <- diffs[1]
     add_bin <- function (id, count) {
-      runif(count, min = id - width/2, max = id + width/2)
+      runif(count, min = id, max = id + width)
     }
   } else {
     add_bin <- function(id, count) {
