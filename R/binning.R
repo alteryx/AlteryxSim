@@ -10,7 +10,7 @@ bin_to_data <- function (bins, count = NULL, discrete = FALSE) {
     bins$count <- round(bins$count * (count/sum(bins$count)), 0)
     total <- sum(bins$count)
     needed <- count - total
-    idsToChange <- sample(bins$id, needed)
+    idsToChange <- sample(bins$id, abs(needed))
     if(needed > 0) {
       bins$count <- bins$count + bins$id %in% idsToChange
     } else if(needed < 0) {
