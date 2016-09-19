@@ -4,10 +4,12 @@
 \alias{bin_to_data}
 \title{Converts binned data into vector of data}
 \usage{
-bin_to_data(bins, discrete = FALSE)
+bin_to_data(bins, count = NULL, discrete = FALSE)
 }
 \arguments{
 \item{bins}{dataframe with columns for id and count}
+
+\item{count}{number of samples to draw}
 
 \item{discrete}{whether the data is discrete (default is False)}
 }
