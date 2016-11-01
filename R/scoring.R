@@ -4,7 +4,7 @@
 #' @param model model object
 #' @param data data to score
 checkForMissingXVars <- function(model, data){
-  x.vars <- AlteryxRDataX::getXVars(model)
+  x.vars <- AlteryxPredictive::getXVars(model)
   data.names <- names(data)
   missing.vars <- x.vars[!(x.vars %in% data.names)]
   vars_in_msg <- paste(missing.vars, collapse = ", ")
@@ -25,7 +25,7 @@ checkForMissingXVars <- function(model, data){
 #' @param data data to score 
 removeMissingLevels <- function(model, data){
   rel.data <- data
-  xlevels <- AlteryxRDataX::getXlevels(model)
+  xlevels <- AlteryxPredictive::getXlevels(model)
   rd.levels <- lapply(Filter(is.factor, rel.data), levels)
   mod.class <- class(model)[1]
   # Remove the records and re-do the factors to remove the missing levels
@@ -107,7 +107,7 @@ getTarVarName<- function(model){
 getErrorVec <- function(the.data, mod.obj) {
   tarVarName <- getTarVarName(mod.obj)
   validation <- prepareDataForScoring(mod.obj, the.data)
-  predVal <- AlteryxRDataX::scoreModel(mod.obj, validation[,-1])
+  predVal <- AlteryxPredictive::scoreModel(mod.obj, validation[,-1])
   if(NCOL(predVal)>2) {
     stop("Scoring on categorical variables with more than 2 levels not supported")
   }
@@ -137,17 +137,17 @@ simNonGLM <- function(mod.obj, errors, nsim) {
     RecordID <- scoreData[,1]
     scoreData <- prepareDataForScoring(mod.obj, scoreData)
     # we dont need to remove the recordID column
-    scores <- AlteryxRDataX::scoreModel(mod.obj, scoreData[,-1])
+    scores <- AlteryxPredictive::scoreModel(mod.obj, scoreData[,-1])
     scores <- scores[,NCOL(scores)]
     
     errorSample <- sample(errors, length(scores)*nsim, replace = TRUE)
     
     results <- errorSample + scores
-    new.data <- AlteryxRDataX::matchLevels(
+    new.data <- AlteryxPredictive::matchLevels(
       scoreData, 
-      AlteryxRDataX::getXlevels(mod.obj)
+      AlteryxPredictive::getXlevels(mod.obj)
     )
-    y.levels <- AlteryxRDataX::getYlevels(mod.obj, new.data)
+    y.levels <- AlteryxPredictive::getYlevels(mod.obj, new.data)
     if (!is.null(y.levels)){
       results <- sapply(results, getScore)
     }
@@ -169,7 +169,7 @@ simGLM <- function(mod.obj, nsim) {
   function(scoreData) {
     RecordID <- scoreData[,1]
     scoreData <- prepareDataForScoring(mod.obj, scoreData)
-    preds <- AlteryxRDataX::scoreModel(mod.obj, scoreData)
+    preds <- AlteryxPredictive::scoreModel(mod.obj, scoreData)
     scores <- preds[,NCOL(preds)]
     names(scores) <- sapply(1:length(scores), toString)
     mod.obj$fitted.values <- scores
