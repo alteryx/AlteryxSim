@@ -138,7 +138,7 @@ data_process <- function(method, chunkSize, count, process, possible, type, id, 
     options('ayxsim.data.noutput' = 3)
   }
   if(type == "binned") {
-    data <- data.frame(data = bin_to_data(bins = data))
+    data <- data.frame(data = bin_to_data(bins = data, count = count))
     names(data) <- c(name)
   }
   if (type == "raw"){
